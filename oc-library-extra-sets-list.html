@@ -1,0 +1,34 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`oc-library-extra-sets-list`
+Element displaying a list of global extra sets
+
+@demo demo/index.html 
+-->
+
+<dom-module id="oc-library-extra-sets-list">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]</h2>
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'oc-library-extra-sets-list',
+
+      properties: {
+        prop1: {
+          type: String,
+          value: 'oc-library-extra-sets-list',
+        },
+      },
+
+    });
+  </script>
+</dom-module>
