@@ -3,7 +3,10 @@
   "description": "Element displaying a list of global extra sets",
   "main": "oc-library-extra-sets-list.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0"
+    "polymer": "Polymer/polymer#^1.4.0",
+    "oc-product-library-extras-api": "git://github.com/oc-elements/oc-product-library-extras-api.git#1.x",
+    "oc-extra-sets-list": "git://github.com/oc-elements/oc-extra-sets-list.git#1.x"
+
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

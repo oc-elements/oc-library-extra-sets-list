@@ -1,20 +1,34 @@
 <link rel="import" href="../polymer/polymer.html">
 
+<link rel="import" href="../oc-extra-sets-list/oc-extra-sets-list.html">
+<link rel="import" href="../oc-product-library-extras-api/oc-product-library-extras-api.html">
+
 <!--
 `oc-library-extra-sets-list`
-Element displaying a list of global extra sets
+Element displaying a list of local extra sets
 
-@demo demo/index.html 
+@demo demo/index.html
 -->
 
 <dom-module id="oc-library-extra-sets-list">
+
+  <style>
+    :host {
+      display: block;
+    }
+  </style>
+
   <template>
-    <style>
-      :host {
-        display: block;
-      }
-    </style>
-    <h2>Hello [[prop1]]</h2>
+    <oc-product-library-extras-api id="extrasApi" ></oc-product-library-extras-api>
+    <oc-extra-sets-list
+            items="[[ _items ]]"
+            total-items="[[ _totalItems ]]"
+            page-size="[[ _pageSize ]]"
+            current-page="[[ _currentPage ]]"
+            on-async-page-request="_onPageRequest"
+            on-enable-extra-set="_onEnableExtraSet"
+            on-disable-extra-set="_onDisableExtraSet"
+    ></oc-extra-sets-list>
   </template>
 
   <script>
@@ -23,11 +37,50 @@ Element displaying a list of global extra sets
       is: 'oc-library-extra-sets-list',
 
       properties: {
-        prop1: {
-          type: String,
-          value: 'oc-library-extra-sets-list',
-        },
+        organisationId: Number,
+        loading: {
+          type: Boolean,
+          value: false,
+          notify: true
+        }
       },
+
+      observers: [
+        'refresh(organisationId)'
+      ],
+
+      refresh: function() {
+        if (this.organisationId) {
+          this.loading = true;
+          this._getExtraSets(1, 10);
+        }
+      },
+
+      _onPageRequest: function(event) {
+        this._getExtraSets(event.detail.page, event.detail.range);
+      },
+
+      _getExtraSets : function(page, pageSize) {
+        this.$.extrasApi.getExtraSets(page, pageSize)
+                .then(function(request) {
+                  this._items = request.response.results;
+                  this._totalItems = request.response.count;
+                  this._currentPage = page;
+                  this._pageSize = pageSize;
+                }.bind(this))
+                .catch(this.fire.bind(this, 'extra-set-error', 'Failed to load extra sets'))
+                .finally(this.set.bind(this, 'loading', false));
+      },
+
+      _onEnableExtraSet: function(e) {
+        this.$.extrasApi.enableExtraSet(e.detail.id)
+                .catch(this.fire.bind(this, 'extra-set-error', 'Failed to enable extra set'));
+      },
+
+      _onDisableExtraSet: function(e) {
+        this.$.extrasApi.disableExtraSet(e.detail.id)
+                .catch(this.fire.bind(this, 'extra-set-error', 'Failed to disable extra set'));
+      }
 
     });
   </script>
