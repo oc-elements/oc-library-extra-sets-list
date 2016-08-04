@@ -30,6 +30,8 @@ Element displaying a list of local extra sets
                 on-enable-extra-set="_onEnableExtraSet"
                 on-disable-extra-set="_onDisableExtraSet"
                 on-delete="_deleteExtraSets"
+                on-clone-set="_cloneSet"
+                clone-active
         ></oc-extra-sets-list>
     </template>
 
@@ -93,7 +95,13 @@ Element displaying a list of local extra sets
             _onDisableExtraSet: function(e) {
                 this.$.extrasApi.disableExtraSet(e.detail.id)
                         .catch(this.fire.bind(this, 'extra-set-error', 'Failed to disable extra set'));
+            },
+
+            _cloneSet : function(e){
+                console.log(e);
             }
+
+
 
         });
     </script>
