@@ -2,6 +2,7 @@
 
 <link rel="import" href="../oc-extra-sets-list/oc-extra-sets-list.html">
 <link rel="import" href="../oc-product-library-extras-api/oc-product-library-extras-api.html">
+<link rel="import" href="../oc-clone-set/oc-clone-set.html">
 
 <!--
 `oc-library-extra-sets-list`
@@ -33,6 +34,8 @@ Element displaying a list of local extra sets
                 on-clone-set="_cloneSet"
                 clone-active
         ></oc-extra-sets-list>
+
+        <oc-clone-option id="cloneOption"></oc-clone-option>
     </template>
 
     <script>
@@ -52,6 +55,10 @@ Element displaying a list of local extra sets
             observers: [
                 'refresh(organisationId)'
             ],
+
+            listeners : {
+                "clone" : "_cloneHandler"
+            },
 
             refresh: function() {
                 if (this.organisationId) {
@@ -98,7 +105,19 @@ Element displaying a list of local extra sets
             },
 
             _cloneSet : function(e){
-                console.log(e);
+                this.$.cloneOption.id = e.detail.id;
+                this.$.cloneOption.name = e.detail.name;
+                this.$.cloneOption.open();
+            },
+
+            _cloneHandler : function(e) {
+                this.loading = true;
+                this.$.extrasApi.cloneExtraSet(e.detail.setId, e.detail.newSetName)
+                        .then(function(){
+                            this._getExtraSets(this._currentPage, this._pageSize);
+                        }.bind(this))
+                        .catch(this.fire.bind(this, 'extra-set-error', 'Failed to load extra sets'))
+                        .finally(this.set.bind(this, 'loading', false));
             }
 
 
