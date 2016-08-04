@@ -5,7 +5,8 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "oc-product-library-extras-api": "git://github.com/oc-elements/oc-product-library-extras-api.git#1.x",
-    "oc-extra-sets-list": "git://github.com/oc-elements/oc-extra-sets-list.git#1.x"
+    "oc-extra-sets-list": "git://github.com/oc-elements/oc-extra-sets-list.git#1.x",
+    "oc-clone-set": "git://github.com/oc-elements/oc-clone-set.git#1.x"
 
   },
   "devDependencies": {
